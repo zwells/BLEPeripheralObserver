@@ -525,7 +525,7 @@ void nRF51822::begin(unsigned char advertisementDataSize,
 #endif
   }
 
-  this->startAdvertising();
+  //this->startAdvertising();
 
 #ifdef __RFduino__
   RFduinoBLE_enabled = 1;
@@ -539,6 +539,12 @@ void nRF51822::poll() {
 
   if (sd_ble_evt_get((uint8_t*)evtBuf, &evtLen) == NRF_SUCCESS) {
     switch (bleEvt->header.evt_id) {
+      case BLE_GAP_EVT_TIMEOUT:
+        if (this->_eventListener) {
+          if (bleEvt->evt.gap_evt.params.timeout.src == BLE_GAP_TIMEOUT_SRC_SCAN)
+            this->_eventListener->BLEDeviceAdvertisementReceived(*this, NULL);
+        }
+        break;
 #ifndef __RFduino__
       case BLE_GAP_EVT_ADV_REPORT:
 #ifdef NRF_51822_DEBUG
@@ -1394,12 +1400,12 @@ void nRF51822::startScanning() {
 
   memset(&scanParameters, 0x00, sizeof(scanParameters));
 
-  scanParameters.active      = 1;     // send scan requests
-  scanParameters.interval    = 0x140; // 200 ms in units of 0.625 ms
+  scanParameters.active      = 0;     // send scan requests
+  scanParameters.interval    = 0x4000; // 200 ms in units of 0.625 ms
   scanParameters.p_whitelist = NULL;  // no whitelist
   scanParameters.selective   = 0;
   scanParameters.timeout     = 10;    // 10 seconds timeout
-  scanParameters.window      = 0xA0;  // 100 ms
+  scanParameters.window      = 0x4000;  // 100 ms
 
   sd_ble_gap_scan_start(&scanParameters);
 #endif
