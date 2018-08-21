@@ -219,8 +219,8 @@ void BLEPeripheral::stopAdvertising() {
   this->_device->stopAdvertising();
 }
 
-void BLEPeripheral::startScanning() {
-  this->_device->startScanning();
+void BLEPeripheral::startScanning(int alt) {
+  this->_device->startScanning(alt);
 }
 
 void BLEPeripheral::stopScanning() {

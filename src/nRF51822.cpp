@@ -1389,7 +1389,7 @@ void nRF51822::stopAdvertising() {
   sd_ble_gap_adv_stop();
 }
 
-void nRF51822::startScanning() {
+void nRF51822::startScanning( int alt ) {
 #ifdef NRF_51822_DEBUG
   Serial.println(F("Start scanning"));
 #endif
@@ -1400,12 +1400,18 @@ void nRF51822::startScanning() {
 
   memset(&scanParameters, 0x00, sizeof(scanParameters));
 
-  scanParameters.active      = 0;     // send scan requests
-  scanParameters.interval    = 0x4000; // 200 ms in units of 0.625 ms
-  scanParameters.p_whitelist = NULL;  // no whitelist
+  scanParameters.active      = 0;       // send scan requests
+  scanParameters.interval    = 0x4000;  // 10.24 s in units of 0.625 ms
+  scanParameters.p_whitelist = NULL;    // no whitelist
   scanParameters.selective   = 0;
-  scanParameters.timeout     = 10;    // 10 seconds timeout
-  scanParameters.window      = 0x4000;  // 100 ms
+  scanParameters.timeout     = 10;      // 10 seconds timeout
+  scanParameters.window      = 0x4000;  // 10.24 s
+
+  if (alt == 1) {
+    scanParameters.interval    = 0x400; // 100 ms in units of 0.625 ms
+    scanParameters.timeout     = 1;     // 1 seconds timeout
+    scanParameters.window      = 0x400; // 100 ms
+  }
 
   sd_ble_gap_scan_start(&scanParameters);
 #endif

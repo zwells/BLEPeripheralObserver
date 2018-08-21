@@ -82,7 +82,7 @@ class nRF51822 : public BLEDevice
     virtual bool setTxPower(int txPower);
     virtual void startAdvertising();
     virtual void stopAdvertising();
-    virtual void startScanning();
+    virtual void startScanning(int alt);
     virtual void stopScanning();
     virtual void disconnect();
 

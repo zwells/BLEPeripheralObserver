@@ -90,7 +90,7 @@ class BLEPeripheral : public BLEDeviceEventListener,
 
     void startAdvertising();
     void stopAdvertising();
-    void startScanning();
+    void startScanning(int alt = 0);
     void stopScanning();
 
     void setDeviceName(const char* deviceName);

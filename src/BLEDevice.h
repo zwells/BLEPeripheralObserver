@@ -79,7 +79,7 @@ class BLEDevice
 
     virtual void startAdvertising() { }
     virtual void stopAdvertising() { }
-    virtual void startScanning() { }
+    virtual void startScanning(int alt) { }
     virtual void stopScanning() { }
     virtual void disconnect() { }
 
